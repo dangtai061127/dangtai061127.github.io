@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site';
+---
+<Base>
+  <section class="hero">
+    <img src="/logo.png" alt="Knight shield emblem" />
+    <div>
+      <h1 style="margin:0 0 .4rem">{site.name}<span class="cursor" aria-hidden="true"></span></h1>
+      <p class="dim" style="margin:0;font-family:var(--mono)">Aspiring SOC / DFIR analyst</p>
+    </div>
+  </section>
+  <!-- TODO: replace the text below with your own English introduction -->
+  <p>Write 3 to 4 sentences here: who you are, what you study, and what kind of blue team role you are looking for.</p>
+  <h2>Focus</h2>
+  <p>
+    <span class="chip cut">SOC monitoring</span><span class="chip cut">Detection</span><span class="chip cut">DFIR</span><span class="chip cut">Threat intelligence</span>
+  </p>
+  <h2>Find me</h2>
+  <p><a href={site.github}>GitHub</a>. Add your LinkedIn, TryHackMe and email links here.</p>
+</Base>

@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+export function getStaticPaths() { return [{ params: { kind: 'writeups' } }, { params: { kind: 'blog' } }]; }
+const { kind } = Astro.params;
+const posts = (await getCollection(kind as any, (p: any) => !p.data.draft)).sort((a: any, b: any) => +b.data.date - +a.data.date);
+const tags = [...new Set(posts.flatMap((p: any) => p.data.tags))].sort();
+const title = kind === 'writeups' ? 'Writeups' : 'Blog';
+---
+<Base title={title}>
+  <h1>{title}</h1>
+  {tags.length > 0 && <div id="filters" role="group" aria-label="Filter by tag">{tags.map((t: string) => <button class="chip cut" aria-pressed="false" data-tag={t}>{t}</button>)}</div>}
+  {posts.length === 0 && <p class="dim">No posts yet. Publish your first one from /admin.</p>}
+  {posts.map((p: any) => (
+    <a class="post" href={`/${kind}/${p.id}/`} data-tags={p.data.tags.join(',')}>
+      <time>{p.data.date.toISOString().slice(0, 10)}{p.data.platform ? `  ${p.data.platform}` : ''}{p.data.difficulty ? `  ${p.data.difficulty}` : ''}</time>
+      <h2>{p.data.title}</h2><p>{p.data.summary}</p>
+    </a>
+  ))}
+</Base>
+<script is:inline>
+const f=document.getElementById('filters');
+f&&f.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';f.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed',String(on));document.querySelectorAll('.post').forEach(p=>{p.hidden=on&&!p.dataset.tags.split(',').includes(b.dataset.tag)})});
+</script>

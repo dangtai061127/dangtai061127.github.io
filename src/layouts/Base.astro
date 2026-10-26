@@ -1,0 +1,69 @@
+---
+import { site } from '../site';
+const { title, desc = 'Blue team portfolio, writeups and notes.' } = Astro.props;
+const path = Astro.url.pathname;
+const nav = [['About', '/'], ['Writeups', '/writeups/'], ['Blog', '/blog/']];
+const gc = site.goatcounter !== 'YOUR-CODE';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{title ? `${title} | ${site.name}` : site.name}</title>
+  <meta name="description" content={desc} />
+  <link rel="icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  {gc && <script is:inline data-goatcounter={`https://${site.goatcounter}.goatcounter.com/count`} async src="//gc.zgo.at/count.js"></script>}
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.png" alt="" width="34" height="34" />{site.name}</a>
+  <nav aria-label="Main">{nav.map(([l, h]) => <a href={h} aria-current={(h === '/' ? path === '/' : path.startsWith(h)) ? 'page' : undefined}>{l}</a>)}</nav>
+</div></header>
+<main class="wrap"><slot /></main>
+<footer><div class="wrap"><a href={site.github}>GitHub</a></div></footer>
+<style is:global>
+:root{--bg:#070C17;--panel:#0C1424;--line:#1B2B4B;--blue:#2F6BFF;--cyan:#2BD4F0;--text:#D5DEEF;--dim:#7C8CAD;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--text);font:17px/1.65 var(--sans)}
+body{margin:0}
+[hidden]{display:none!important}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:760px;margin:0 auto;padding:0 1.25rem}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:1.5rem;height:64px}
+.brand{display:flex;align-items:center;gap:.6rem;font:600 .95rem var(--mono);color:var(--text)}
+nav{margin-left:auto;display:flex;gap:1.25rem;font:.9rem var(--mono)}
+nav a{color:var(--dim);border-bottom:2px solid transparent;padding:.2rem 0}
+nav a:hover{color:var(--text);text-decoration:none}
+nav a[aria-current]{color:var(--text);border-color:var(--blue)}
+main{padding:3rem 1.25rem 4rem}
+footer{border-top:1px solid var(--line);padding:1.25rem 0;font:.85rem var(--mono)}
+h1,h2,h3{font-family:var(--mono);line-height:1.25;letter-spacing:-.01em}
+h1{font-size:1.9rem;margin:0 0 1.5rem}
+.dim{color:var(--dim)}
+.cut{clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.chip{font:.75rem var(--mono);padding:.1rem .6rem;border:1px solid var(--line);color:var(--dim);background:none;margin:0 .4rem .4rem 0;display:inline-block}
+button.chip{cursor:pointer}button.chip[aria-pressed=true]{border-color:var(--blue);color:var(--text);background:#2F6BFF22}
+.post{display:block;padding:1rem 0 .6rem 1rem;border-left:2px solid var(--line);margin-bottom:.6rem;color:var(--text)}
+.post:hover{border-color:var(--blue);background:linear-gradient(90deg,#2F6BFF14,transparent);text-decoration:none}
+.post h2{font-size:1.1rem;margin:.1rem 0 .3rem}.post p{margin:0 0 .5rem;color:var(--dim)}
+.post time,.pmeta{font:.8rem var(--mono);color:var(--dim)}
+.meta{background:var(--panel);border-left:2px solid var(--blue);padding:1rem 1.25rem;margin:1.25rem 0 2rem;font-size:.9rem}
+.meta div{display:flex;gap:1rem;padding:.15rem 0}.meta dt{font-family:var(--mono);color:var(--dim);min-width:7.5rem}.meta dd{margin:0}
+.prose h2{margin-top:2.2rem;font-size:1.3rem}.prose h3{font-size:1.1rem}
+.prose img{max-width:100%;height:auto;border:1px solid var(--line)}
+.prose pre{background:var(--panel)!important;border:1px solid var(--line);padding:1rem;overflow-x:auto;font-size:.85rem}
+.prose code{font-family:var(--mono);font-size:.88em}.prose :not(pre)>code{background:var(--panel);padding:.1rem .35rem}
+.prose table{border-collapse:collapse;display:block;overflow-x:auto}.prose th,.prose td{border:1px solid var(--line);padding:.4rem .7rem}
+.prose blockquote{margin:1rem 0;padding-left:1rem;border-left:2px solid var(--line);color:var(--dim)}
+.hero{display:flex;gap:2rem;align-items:center;margin-bottom:2.5rem}
+.hero img{width:150px;height:150px;filter:drop-shadow(0 0 22px #2F6BFF66)}
+.cursor{display:inline-block;width:.55ch;height:1em;background:var(--cyan);vertical-align:-.12em;margin-left:.2ch;animation:b 1.1s steps(1) infinite}
+@keyframes b{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cursor{animation:none}}
+@media(max-width:560px){.hero{flex-direction:column;align-items:flex-start}.meta div{flex-direction:column;gap:0}}
+</style>
+</body></html>

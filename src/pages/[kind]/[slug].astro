@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { site } from '../../site';
+export async function getStaticPaths() {
+  const out: any[] = [];
+  for (const kind of ['writeups', 'blog'] as const)
+    for (const post of await getCollection(kind, (p: any) => !p.data.draft)) out.push({ params: { kind, slug: post.id }, props: { post } });
+  return out;
+}
+const { post } = Astro.props;
+const d = post.data as any;
+const { Content } = await render(post);
+const mitre = (d.mitre ?? []).map((id: string) => ({ id, url: `https://attack.mitre.org/techniques/${id.replace('.', '/')}/` }));
+const hasMeta = d.platform || d.difficulty || d.category || d.tools?.length || mitre.length;
+---
+<Base title={d.title} desc={d.summary}>
+  <article>
+    <p class="pmeta">{d.date.toISOString().slice(0, 10)}  <span id="views"></span></p>
+    <h1>{d.title}</h1>
+    {hasMeta && (
+      <dl class="meta cut">
+        {d.platform && <div><dt>Platform</dt><dd>{d.platform}</dd></div>}
+        {d.difficulty && <div><dt>Difficulty</dt><dd>{d.difficulty}</dd></div>}
+        {d.category && <div><dt>Category</dt><dd>{d.category}</dd></div>}
+        {d.tools?.length > 0 && <div><dt>Tools</dt><dd>{d.tools.join(', ')}</dd></div>}
+        {mitre.length > 0 && <div><dt>MITRE ATT&CK</dt><dd>{mitre.map((m: any, i: number) => <><a href={m.url}>{m.id}</a>{i < mitre.length - 1 ? ', ' : ''}</>)}</dd></div>}
+      </dl>
+    )}
+    <div class="prose"><Content /></div>
+    <p>{d.tags.map((t: string) => <span class="chip cut">{t}</span>)}</p>
+  </article>
+</Base>
+<script is:inline define:vars={{ gc: site.goatcounter }}>
+if (gc !== 'YOUR-CODE') fetch(`https://${gc}.goatcounter.com/counter/${encodeURIComponent(location.pathname)}.json`).then(r => r.ok ? r.json() : null).then(j => { if (j) document.getElementById('views').textContent = `${j.count} views`; }).catch(() => {});
+</script>

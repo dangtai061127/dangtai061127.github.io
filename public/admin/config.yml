@@ -1,0 +1,33 @@
+backend: { name: github, repo: dangtai061127/dangtai061127.github.io, branch: main }
+media_folder: public/uploads
+public_folder: /uploads
+collections:
+  - name: writeups
+    label: Writeups
+    folder: src/content/writeups
+    create: true
+    extension: md
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+      - { name: summary, label: Summary, widget: text }
+      - { name: platform, label: Platform, widget: select, required: false, options: [TryHackMe, HackTheBox, CTF, Home lab, Other] }
+      - { name: difficulty, label: Difficulty, widget: select, required: false, options: [Easy, Medium, Hard, Insane] }
+      - { name: category, label: Category, widget: string, required: false }
+      - { name: tools, label: Tools, widget: list, required: false }
+      - { name: mitre, label: "MITRE ATT&CK IDs (e.g. T1059.001)", widget: list, required: false }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: draft, label: "Draft (hidden from site)", widget: boolean, default: true }
+      - { name: body, label: Content, widget: markdown }
+  - name: blog
+    label: Blog
+    folder: src/content/blog
+    create: true
+    extension: md
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+      - { name: summary, label: Summary, widget: text }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: draft, label: "Draft (hidden from site)", widget: boolean, default: true }
+      - { name: body, label: Content, widget: markdown }
