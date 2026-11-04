@@ -1,7 +1,7 @@
 ---
-title: 'Sample writeup: delete me'
+title: Hollow Chapter
 date: 2026-10-26
-summary: Placeholder post to check the layout. Replace it from /admin.
+summary: Khaled downloaded a fake agentic coding ebook from a malicious search result, leading to a malware infection. The investigation focuses on tracing the attack, identifying persistence and suspicious activity, recovering deleted evidence, and determining the overall impact.
 platform: TryHackMe
 difficulty: Hard
 category: Digital Forensics
@@ -9,11 +9,8 @@ tools:
   - EZ tools
   - de4dot
   - dnSpy
-mitre:
-  - T1059.001
-tags:
-  - siem
-  - sample
+mitre: []
+tags: []
 draft: false
 ---
 
