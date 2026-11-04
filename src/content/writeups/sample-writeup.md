@@ -9,23 +9,23 @@ tools:
   - EZ tools
   - de4dot
   - dnSpy
-mitre: []
+mitre:
+  - T1509.10
+  - T1055.012
+  - T1620
 tags: []
 draft: false
 ---
 
 # Hollow Chapter — BTLO Investigation Writeup
-
-|  |  |
-| --- | --- |
+|||
+|---|---|
 | **Platform** | Blue Team Labs Online (BTLO) |
 | **Lab** | Hollow Chapter |
 | **Category** | Digital Forensics / Malware Triage |
 | **Author** | Đặng Đắc Tài |
-| **Date** | *[date completed]* |
-| **Victim** | `khaled.allam` (Windows workstation, triage collection) |
-
-> **Legend.** `[IMG n]` = screenshot number n from your notes (insert at that spot). `[VERIFY]` = I could not confirm this from your screenshots; check it before publishing. `[TODO]` = missing evidence.
+| **Date** | 5/11/2026 |
+| **Victim** | `khaled.allam` |
 
 ***
 
@@ -34,8 +34,6 @@ draft: false
 A developer searched for a guide to agentic coding and downloaded a `.7z` "ebook" from a lookalike domain, `claude-ai-setup[.]com`, served over plain HTTP. The archive contained a shortcut (`.lnk`) disguised as the ebook plus two hidden "PDF" files (`3th.pdf`, `4th.pdf`) that actually carry the malware. A decoy PDF opened for the victim while the shortcut quietly ran a `cmd` → PowerShell chain that decrypted five scripts, planted files in `%LOCALAPPDATA%\Packages\Microsoft.WindowsSoundDiagnostics\Cache`, and registered hidden scheduled tasks disguised as Realtek audio services.
 
 The tasks launch a renamed, legitimate **AutoHotkey** binary (`RtkNGUI64.exe`). Its script rebuilds a .NET payload (`clay_Client.exe`) from a 9.7 MB text file (`RtkLoggingManifest.man`) and **hollows** a random .NET Framework host (`AddInProcess32`, `AppLaunch` or `aspnet_compiler`). The payload is ConfuserEx-obfuscated, contains RAT-style commands (remote desktop, file manager, reflection), and beacons to three encrypted C2 addresses on **TCP/448**. A second chain (`ResetRealtekAudioSettings64`) reflectively loads two more embedded binaries. The batch file that started it all wrote a log and deleted it within seconds.
-
-**Impact:** full remote-access capability on the workstation with persistence across logons. `[TODO: state whether data theft was confirmed]`
 
 ***
 
@@ -54,7 +52,7 @@ Khaled, a software developer, searched online for an agentic-coding guide and do
 | Program execution | Registry Explorer (UserAssist), PECmd (Prefetch) |
 | Script analysis | Notepad++, PowerShell, CyberChef |
 | Dynamic analysis | Process Monitor |
-| Static analysis | Detect It Easy, dnSpy |
+| Static analysis | dnSpy |
 | Deobfuscation | de4dot |
 | Reputation | VirusTotal |
 
@@ -97,7 +95,7 @@ Khaled, a software developer, searched online for an agentic-coding guide and do
 
 ![](/uploads/20261104-152131.png)
 
-- The `download_url_chains` table (`[IMG 6]`) shows the source of the archive: `http://claude-ai-setup.com/Agentic Coding with Claude Code The everyday developer's guide to agentic coding with Claude Code.7z`
+- The `download_url_chains` table shows the source of the archive: `http://claude-ai-setup.com/Agentic Coding with Claude Code The everyday developer's guide to agentic coding with Claude Code.7z`
 
 ![](/uploads/20261104-152131.png)
 
@@ -177,7 +175,7 @@ Five files were produced:
 | `Cache_ec641a2d…` | 2038 B | 22:49:11 |
 | `Cache_27bfdab8…` | 489 B | 22:49:13 |
 
-What each script does (`[IMG 18–24]`):
+What each script does:
 
 - **Subtitles dropper.** Pulls hex text between `=== SoundEffects N ===` markers in `3th.pdf`, strips non-hex, converts to bytes and writes `Microsoft.WindowsSoundDiagnostics\Subtitles` (≈1.8 MB).
 
@@ -205,7 +203,7 @@ What each script does (`[IMG 18–24]`):
 
 All tasks share the cover story: **Description "Audio Helper", Author "AudioEngine"**, hidden, no battery restrictions.
 
-**Task 1 — `CheckRealtekAudioVersion`** (`[IMG 23–24]`)
+**Task 1 — `CheckRealtekAudioVersion`**
 
 - Principal: `SYSTEM` if elevated, otherwise the current user.
 - Triggers: **time trigger** starting 5 minutes after creation (2-hour window) plus a **logon trigger**.
@@ -218,14 +216,16 @@ All tasks share the cover story: **Description "Audio Helper", Author "AudioEngi
 
 ![](/uploads/20261104-154245.png)
 
-**`RealtekAudioService64.ps1`** (`[IMG 28–29]`) is written with **Chinese variable names** and Base64-encoded strings. It recreates the tasks:
+**`RealtekAudioService64.ps1`** is written with **Chinese variable names** and Base64-encoded strings. It recreates the tasks:
 
 | Task | Runs | Trigger |
 | --- | --- | --- |
 | `CheckRealtekAudioVersion` | `Cache\RtkNGUI64.exe` | `[TODO]` |
 | `RealtekAudioEnhancement64` | `Cache\ConfigureSoundSettings\RealtekAudioEnhancements64.exe` | Logon of `khaled.allam` |
 
-That explains "2 tasks created, 1 deleted" in your notes: `CheckRealtekAudioVersion` was created at 22:49:12, then deleted and recreated at 22:54:57 together with `RealtekAudioEnhancement64`. `$J` shows the delete-and-recreate sequence (`[IMG 32]`).
+That explains "2 tasks created, 1 deleted" in your notes: `CheckRealtekAudioVersion` was created at 22:49:12, then deleted and recreated at 22:54:57 together with `RealtekAudioEnhancement64`. `$J` shows the delete-and-recreate sequence.
+
+![](/uploads/20261105-002940.png)
 
 **Task 3 — `ResetRealtekAudioSettings64`** is created by a script in `ConfigureSoundSettings\` (see Phase 7).
 
@@ -390,7 +390,7 @@ Recovery:
 
 ***
 
-## 8. MITRE ATT&CK mapping
+## 8. MITRE ATT&CK
 
 | Tactic | Technique | ID | Evidence |
 | --- | --- | --- | --- |
@@ -414,8 +414,6 @@ Recovery:
 | Command and Control | Non-Standard Port | T1571 | TCP/448 `[VERIFY]\` |
 
 ***
-
-
 
 ## 9. Lessons learned
 
