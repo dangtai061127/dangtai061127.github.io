@@ -12,9 +12,12 @@ const title = kind === 'writeups' ? 'Writeups' : 'Blog';
   {tags.length > 0 && <div id="filters" role="group" aria-label="Filter by tag">{tags.map((t: string) => <button class="chip cut" aria-pressed="false" data-tag={t}>{t}</button>)}</div>}
   {posts.length === 0 && <p class="dim">No posts yet. Publish your first one from /admin.</p>}
   {posts.map((p: any) => (
-    <a class="post" href={`/${kind}/${p.id}/`} data-tags={p.data.tags.join(',')}>
-      <time>{p.data.date.toISOString().slice(0, 10)}{p.data.platform ? `  ${p.data.platform}` : ''}{p.data.difficulty ? `  ${p.data.difficulty}` : ''}</time>
-      <h2>{p.data.title}</h2><p>{p.data.summary}</p>
+    <a class:list={['post', { 'has-img': p.data.image }]} href={`/${kind}/${p.id}/`} data-tags={p.data.tags.join(',')}>
+      <div>
+        <time>{p.data.date.toISOString().slice(0, 10)}{p.data.platform ? `  ${p.data.platform}` : ''}{p.data.difficulty ? `  ${p.data.difficulty}` : ''}</time>
+        <h2>{p.data.title}</h2><p>{p.data.summary}</p>
+      </div>
+      {p.data.image && <img src={p.data.image} alt="" loading="lazy" />}
     </a>
   ))}
 </Base>

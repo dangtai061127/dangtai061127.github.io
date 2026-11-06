@@ -14,6 +14,7 @@ collections:
       - { name: platform, label: Platform, widget: select, required: false, options: [TryHackMe, HackTheBox, BTLO, CTF, Home lab, Other] }
       - { name: difficulty, label: Difficulty, widget: select, required: false, options: [Easy, Medium, Hard, Insane] }
       - { name: category, label: Category, widget: string, required: false }
+      - { name: image, label: "Theme image", widget: image, required: false }
       - { name: tools, label: Tools, widget: list, required: false }
       - { name: mitre, label: "MITRE ATT&CK IDs (e.g. T1059.001)", widget: list, required: false }
       - { name: tags, label: Tags, widget: list, required: false }
