@@ -11,7 +11,7 @@ collections:
       - { name: title, label: Title, widget: string }
       - { name: date, label: Date, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
       - { name: summary, label: Summary, widget: text }
-      - { name: platform, label: Platform, widget: select, required: false, options: [TryHackMe, HackTheBox, CTF, Home lab, Other] }
+      - { name: platform, label: Platform, widget: select, required: false, options: [TryHackMe, HackTheBox, BTLO, CTF, Home lab, Other] }
       - { name: difficulty, label: Difficulty, widget: select, required: false, options: [Easy, Medium, Hard, Insane] }
       - { name: category, label: Category, widget: string, required: false }
       - { name: tools, label: Tools, widget: list, required: false }

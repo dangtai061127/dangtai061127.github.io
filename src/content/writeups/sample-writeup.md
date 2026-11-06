@@ -2,7 +2,7 @@
 title: Hollow Chapter
 date: 2026-10-26
 summary: Khaled downloaded a fake agentic coding ebook from a malicious search result, leading to a malware infection. The investigation focuses on tracing the attack, identifying persistence and suspicious activity, recovering deleted evidence, and determining the overall impact.
-platform: TryHackMe
+platform: BTLO
 difficulty: Hard
 category: Digital Forensics
 tools:
@@ -10,14 +10,13 @@ tools:
   - de4dot
   - dnSpy
 mitre:
-  - T1509.10
+  - T1059.010
   - T1055.012
   - T1620
 tags: []
 draft: false
 ---
 
-# Hollow Chapter — BTLO Investigation Writeup
 |||
 |---|---|
 | **Platform** | Blue Team Labs Online (BTLO) |
@@ -96,8 +95,6 @@ Khaled, a software developer, searched online for an agentic-coding guide and do
 ![](/uploads/20261104-152131.png)
 
 - The `download_url_chains` table shows the source of the archive: `http://claude-ai-setup.com/Agentic Coding with Claude Code The everyday developer's guide to agentic coding with Claude Code.7z`
-
-![](/uploads/20261104-152131.png)
 
 - The `downloads` table gives start `13430097864424259` (22:44:24) and end `13430097946379866` (22:45:46), 86,041,995 bytes.
 
@@ -223,7 +220,7 @@ All tasks share the cover story: **Description "Audio Helper", Author "AudioEngi
 | `CheckRealtekAudioVersion` | `Cache\RtkNGUI64.exe` | `[TODO]` |
 | `RealtekAudioEnhancement64` | `Cache\ConfigureSoundSettings\RealtekAudioEnhancements64.exe` | Logon of `khaled.allam` |
 
-That explains "2 tasks created, 1 deleted" in your notes: `CheckRealtekAudioVersion` was created at 22:49:12, then deleted and recreated at 22:54:57 together with `RealtekAudioEnhancement64`. `$J` shows the delete-and-recreate sequence.
+That explains why two tasks were created and one deleted: `CheckRealtekAudioVersion` was created at 22:49:12, then deleted and recreated at 22:54:57 together with `RealtekAudioEnhancement64`. `$J` shows the delete-and-recreate sequence.
 
 ![](/uploads/20261105-002940.png)
 
@@ -233,19 +230,19 @@ That explains "2 tasks created, 1 deleted" in your notes: `CheckRealtekAudioVers
 
 ### Phase 6 — Execution chain A: AutoHotkey → process hollowing
 
-1. `RtkNGUI64.exe` and `RealtekAudioEnhancements64.exe` have the **same hash** (`[IMG 33–34]`): SHA-256 `EFFDEA83C6B7A1DC2CE9E9D40E91DFD59BED9FCBD580903423648B7CA97D9696`. VirusTotal: 0/71, original name `AutoHotkey.exe`. It is a **legitimate** binary abused as a launcher. An AutoHotkey exe automatically runs the `.ahk` file of the same name, so `RtkNGUI64.ahk` is the real program.
+1. `RtkNGUI64.exe` and `RealtekAudioEnhancements64.exe` have the **same hash**: SHA-256 `EFFDEA83C6B7A1DC2CE9E9D40E91DFD59BED9FCBD580903423648B7CA97D9696`. VirusTotal: 0/71, original name `AutoHotkey.exe`. It is a **legitimate** binary abused as a launcher. An AutoHotkey exe automatically runs the `.ahk` file of the same name, so `RtkNGUI64.ahk` is the real program.
 
 ![](/uploads/20261104-155751.png)
 
-1. `RtkNGUI64.ahk` (`[IMG 36]`, Chinese comments) includes four modules from `Audio\`: `RtkAudioEffects64.ahk`, `RtkDeviceConfigure64.ahk`, `RtkDiagService.ahk`, `RtkCplApp.ahk`. It sets the log path to `RtkLoggingManifest.man`, reads it as bytes, waits (`Sleep` = seconds × 1500) and calls `Execute(configData, systemPath)`.
+2. `RtkNGUI64.ahk` (Chinese comments) includes four modules from `Audio\`: `RtkAudioEffects64.ahk`, `RtkDeviceConfigure64.ahk`, `RtkDiagService.ahk`, `RtkCplApp.ahk`. It sets the log path to `RtkLoggingManifest.man`, reads it as bytes, waits (`Sleep` = seconds × 1500) and calls `Execute(configData, systemPath)`.
 
 ![](/uploads/20261104-155828.png)
 
-1. `RtkCplApp.ahk` (`[IMG 39]`) defines `GetRandomPath()`: pick a **random** host among `C:\Windows\Microsoft.NET\Framework\v4.0.30319\` → `AddInProcess32.exe`, `AppLaunch.exe`, `aspnet_compiler.exe`.
+3. `RtkCplApp.ahk` defines `GetRandomPath()`: pick a **random** host among `C:\Windows\Microsoft.NET\Framework\v4.0.30319\` → `AddInProcess32.exe`, `AppLaunch.exe`, `aspnet_compiler.exe`.
 
 ![](/uploads/20261104-155848.png)
 
-1. `RtkAudioEffects64.ahk` hides API/library names with **reverse + XOR 0x55**. 
+4. `RtkAudioEffects64.ahk` hides API/library names with **reverse + XOR 0x55**. 
 
 ![](/uploads/20261104-160653.png)
 
@@ -278,7 +275,7 @@ The `RealtekAudioEnhancements64` side (folder `ConfigureSoundSettings\`) contain
 
 ![](/uploads/20261104-160838.png)
 
-- The `.bat `launches hidden PowerShell with `-ep Bypass` that reads `ResetRealtekAudioSettings64.Realtek`, skipping the first 1000 lines (`500*2`) and taking the next 140 (`70*2`). The file name is built from fragments (`[char]97`, `62+2`) to defeat string search.
+- The `.bat` launches hidden PowerShell with `-ep Bypass` that reads `ResetRealtekAudioSettings64.Realtek`, skipping the first 1000 lines (`500*2`) and taking the next 140 (`70*2`). The file name is built from fragments (`[char]97`, `62+2`) to defeat string search.
 
 ![](/uploads/20261104-160855.png)
 
@@ -306,7 +303,7 @@ Recovery:
 
 ![](/uploads/20261104-163236.png)
 
-- In dnSpy, `GClass0` holds the C2 list: **three encrypted strings** and one port, **448** (`[IMG 52–53]`). The strings are decrypted at runtime by `<Module>.smethod_3` / `smethod_6`.
+- In dnSpy, `GClass0` holds the C2 list: **three encrypted strings** and one port, **448**. The strings are decrypted at runtime by `<Module>.smethod_3` / `smethod_6`.
 
 ![](/uploads/20261104-161128.png)
 
@@ -380,8 +377,8 @@ Recovery:
 | Path | `%LOCALAPPDATA%\Microsoft\Realtek Diagnostics\Cache_*.ps1` | Dropped scripts |
 | Path | `%LOCALAPPDATA%\Packages\Microsoft.WindowsSoundDiagnostics\` | Staging root |
 | Path | `…\Cache\RtkNGUI64.exe`, `.ahk`, `RtkLoggingManifest.man`, `Audio\*.ahk` | AHK chain |
-| Path | …\Cache\ConfigureSoundSettings\RealtekAudioEnhancements64.\* | Second chain |
-| Path | `…\ResetRealtekAudioSettings64.Realtek`, `…64defualt.bat\` | Reflective loader |
+| Path | `…\Cache\ConfigureSoundSettings\RealtekAudioEnhancements64.*` | Second chain |
+| Path | `…\ResetRealtekAudioSettings64.Realtek`, `…64defualt.bat` | Reflective loader |
 | Path | `…\RealtekAudioService64.bat`, `.ps1`; `Subtitles` | Dropped scripts |
 | Scheduled tasks | `CheckRealtekAudioVersion`, `RealtekAudioEnhancement64`, `ResetRealtekAudioSettings64` | Author `AudioEngine`, description `Audio Helper` |
 | Log pattern | `ver0x0000000000000003_<RANDOM>.log` | Created then deleted |
@@ -403,7 +400,7 @@ Recovery:
 | Persistence | Scheduled Task/Job: Scheduled Task | T1053.005 | Three "Audio Helper" tasks |
 | Defense Evasion | Masquerading: Match Legitimate Name or Location | T1036.005 | Realtek / WindowsSoundDiagnostics names |
 | Defense Evasion | Obfuscated Files or Information | T1027 | `[char]` arrays, fragmented strings, ConfuserEx |
-| Defense Evasion | Obfuscated Files or Information: Encrypted/Encoded File | T1027.013 | PSA1 AES blocks, XOR, Base64, hex in `.man`/`.Realtek\` |
+| Defense Evasion | Obfuscated Files or Information: Encrypted/Encoded File | T1027.013 | PSA1 AES blocks, XOR, Base64, hex in `.man`/`.Realtek` |
 | Defense Evasion | Deobfuscate/Decode Files or Information | T1140 | Scripts decrypt themselves at runtime |
 | Defense Evasion | Hide Artifacts: Hidden Files and Directories | T1564.001 | Hidden `3th.pdf` / `4th.pdf` (via `$J`) |
 | Defense Evasion | Process Injection: Process Hollowing | T1055.012 | `RtkNGUI64.ahk` → .NET host |
@@ -411,7 +408,7 @@ Recovery:
 | Defense Evasion | Modify Registry | T1112 | Windows Script Host enabled |
 | Defense Evasion | Indicator Removal: File Deletion | T1070.004 | `.log` deleted 22:55:02 |
 | Command and Control | Non-Application Layer Protocol | T1095 | Raw TCP socket in `clay_Client` `[VERIFY]` |
-| Command and Control | Non-Standard Port | T1571 | TCP/448 `[VERIFY]\` |
+| Command and Control | Non-Standard Port | T1571 | TCP/448 `[VERIFY]` |
 
 ***
 
