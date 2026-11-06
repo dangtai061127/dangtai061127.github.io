@@ -5,6 +5,7 @@ summary: Khaled downloaded a fake agentic coding ebook from a malicious search r
 platform: BTLO
 difficulty: Hard
 category: Digital Forensics
+image: https://blueteamlabs.online/storage/labs/744b7fa51d046f8e20a051292979222f9c76e481.png
 tools:
   - EZ tools
   - de4dot
