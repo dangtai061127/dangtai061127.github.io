@@ -3,7 +3,9 @@ title: Inherited
 date: 2026-11-06
 summary: Halvard Trust Bank discovers unauthorized payments after an attacker secretly maintained access to its systems for weeks. The investigation traces how the attacker gained access through the authentication server, which customers were affected, and who created the fraudulent payments.
 platform: BTLO
+difficulty: ''
 category: Incident Response / Log Analysis
+image: https://blueteamlabs.online/storage/labs/77f1b8381799feb3be2c551063fbfb5ab79ebdaa.png
 tools:
   - Timeline Explorer
   - awk / sort / uniq
