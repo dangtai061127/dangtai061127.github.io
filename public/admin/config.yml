@@ -50,10 +50,10 @@ collections:
             label: Links
             widget: object
             fields:
-              - { name: linkedin, label: LinkedIn URL, widget: string, required: false }
-              - { name: tryhackme, label: TryHackMe URL, widget: string, required: false }
-              - { name: btlo, label: BTLO URL, widget: string, required: false }
-              - { name: email, label: Email address, widget: string, required: false }
+              - { name: linkedin, label: LinkedIn URL, widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
+              - { name: tryhackme, label: TryHackMe URL, widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
+              - { name: btlo, label: BTLO URL, widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
+              - { name: email, label: Email address, widget: string, required: false, pattern: ['^[^@s:]+@[^@s]+$', 'Address only, for example you@example.com'] }
           - name: skills
             label: Skills
             widget: list
@@ -68,7 +68,7 @@ collections:
             fields:
               - { name: title, label: Title, widget: string }
               - { name: meta, label: "Issuer and year", widget: string, required: false }
-              - { name: url, label: "Verification URL", widget: string, required: false }
+              - { name: url, label: "Verification URL", widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
           - name: experience
             label: Experience
             widget: list

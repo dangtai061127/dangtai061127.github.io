@@ -3,23 +3,27 @@
 <title>overflow and filter checks</title>
 <body>
 <script>
-const paths = ['/', '/about/', '/writeups/', '/blog/', '/writeups/inherited/', '/writeups/sample-writeup/', '/blog/hello/'];
+const paths = ['/', '/about/', '/writeups/', '/blog/', '/writeups/inherited/', '/writeups/sample-writeup/', '/blog/hello/', '/writeups/long-title/'];
 const say = t => { const p = document.createElement('p'); p.textContent = t; document.body.append(p); };
-const open = (url, w) => new Promise(done => {
+const open = (url, w, h = 800) => new Promise(done => {
   const f = document.createElement('iframe');
-  f.style.cssText = `width:${w}px;height:800px;border:0`;
+  f.style.cssText = `width:${w}px;height:${h}px;border:0`;
   f.onload = () => done(f);
   f.src = url;
   document.body.append(f);
 });
 const check = (name, ok, extra = '') => say(`${ok ? 'OK' : 'FAIL'} ${name} ${extra}`);
 (async () => {
-  for (const w of [500, 1280]) for (const p of paths) {
+  for (const w of [320, 500, 1280]) for (const p of paths) {
     const f = await open(p, w);
     const el = f.contentDocument.documentElement;
     check(`${w} ${p}`, el.scrollWidth <= el.clientWidth, `${el.scrollWidth}/${el.clientWidth}`);
     f.remove();
   }
+  let s = await open('/', 375, 667);
+  const soc = s.contentDocument.querySelector('.soc').getBoundingClientRect().bottom;
+  check('home actions fit the first phone screen', soc <= 667, soc);
+  s.remove();
   const visible = d => [...d.querySelectorAll('.post')].filter(p => !p.hidden).length;
   let f = await open('/writeups/?tag=SOC%20monitoring', 800);
   check('tag with a space filters', visible(f.contentDocument) === 1 && f.contentDocument.querySelector('[aria-pressed=true]')?.dataset.tag === 'SOC monitoring');

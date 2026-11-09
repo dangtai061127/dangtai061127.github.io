@@ -53,6 +53,7 @@ nav[aria-label=Main] a[aria-current]{color:var(--text);box-shadow:0 8px 0 -6px v
 footer{border-top:1px solid var(--line)}
 .foot-links{display:flex;flex-wrap:wrap;gap:18px}
 .foot-links a{color:var(--soft)}
+h1,h2,h3,.title,.pager a{overflow-wrap:anywhere}
 h1,h2,h3{font-family:var(--disp);line-height:1.2;letter-spacing:-.01em}
 h1{font-size:2.3rem;margin:0 0 1.5rem}
 .dim{color:var(--dim)}
@@ -64,7 +65,7 @@ h1{font-size:2.3rem;margin:0 0 1.5rem}
 .btn:hover{text-decoration:none;filter:brightness(1.12)}
 .btn.o{background:#14233f;color:var(--text)}
 /* clip-path cuts off an outer outline, so these draw focus inside the shape */
-.btn:focus-visible,a.card:focus-visible{outline:2px solid #fff;outline-offset:-5px}
+.btn:focus-visible,a.card:focus-visible>div{outline:2px solid #fff;outline-offset:-5px}
 .h{display:flex;align-items:center;gap:16px;margin-bottom:30px}
 .h small{font:500 13px var(--mono);color:var(--cyan)}
 .h h2{font:700 34px/1.1 var(--disp);margin:0;letter-spacing:-.01em}
@@ -78,6 +79,7 @@ a.card:hover{text-decoration:none;background:linear-gradient(140deg,var(--cyan),
 .go{display:inline-block;font:600 14.5px var(--disp);color:var(--cyan);margin-top:18px}
 .badge{flex:none;width:46px;height:54px;background:linear-gradient(160deg,var(--cyan),var(--blue));clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%)}
 .chip{font:.75rem var(--mono);padding:.15rem .65rem;border:1px solid var(--line);color:var(--soft);background:none;margin:0 .4rem .4rem 0;display:inline-block}
+button.chip:focus-visible{outline-offset:-2px}
 button.chip{cursor:pointer}button.chip[aria-pressed=true]{border-color:var(--cyan);color:var(--text);background:#2F6BFF33}
 .post{display:block;padding:1rem 0 .6rem 1rem;border-left:2px solid var(--line);margin-bottom:.6rem;color:var(--text)}
 .post:hover{border-color:var(--cyan);background:linear-gradient(90deg,#2F6BFF1f,transparent);text-decoration:none}
@@ -94,6 +96,6 @@ button.chip{cursor:pointer}button.chip[aria-pressed=true]{border-color:var(--cya
 .prose code{font-family:var(--mono);font-size:.88em}.prose :not(pre)>code{background:var(--panel);padding:.1rem .35rem}
 .prose table{border-collapse:collapse;display:block;overflow-x:auto}.prose th,.prose td{border:1px solid var(--line);padding:.4rem .7rem}
 .prose blockquote{margin:1rem 0;padding-left:1rem;border-left:2px solid var(--line);color:var(--soft)}
-@media(max-width:860px){.wrap{padding-inline:20px}nav[aria-label=Main]{gap:14px;font-size:13.5px}.brand{font-size:14px}.h h2{font-size:28px}.post.has-img{grid-template-columns:1fr}.post img{width:100%}.meta div{flex-direction:column;gap:0}}
+@media(max-width:860px){.wrap{padding-inline:20px}.nav{height:auto;min-height:78px;flex-wrap:wrap;gap:6px 14px;padding-block:14px}nav[aria-label=Main]{gap:14px;font-size:13.5px}.brand{font-size:14px}.h h2{font-size:28px}.post.has-img{grid-template-columns:1fr}.post img{width:100%}.meta div{flex-direction:column;gap:0}}
 </style>
 </body></html>

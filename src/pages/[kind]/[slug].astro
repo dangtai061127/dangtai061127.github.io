@@ -15,9 +15,9 @@ const d = post.data as any;
 const { Content, headings } = await render(post);
 const toc = headings.filter((h: any) => h.depth === 2 || h.depth === 3);
 const showToc = toc.length >= 2;
-const minutes = Math.max(1, Math.ceil(post.body.trim().split(/\s+/).length / 200));
+const minutes = Math.max(1, Math.ceil((post.body ?? '').trim().split(/\s+/).length / 200));
 const mitre = (d.mitre ?? []).map((id: string) => ({ id, url: `https://attack.mitre.org/techniques/${id.replace('.', '/')}/` }));
-const hasMeta = d.platform || d.difficulty || d.category || d.tools?.length || mitre.length;
+const hasMeta = !!(d.platform || d.difficulty || d.category || d.tools?.length || mitre.length);
 ---
 <Base title={d.title} desc={d.summary} wide>
   <div class:list={['art', { 'has-toc': showToc }]}>

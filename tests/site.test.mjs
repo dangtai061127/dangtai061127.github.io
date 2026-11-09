@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 const page = p => readFileSync(`dist/${p}`, 'utf8');
 const FULL = process.env.FULL === '1';
 
@@ -60,4 +60,24 @@ test('rss is well formed', () => {
   assert.doesNotMatch(x, /DRAFT-MARKER/);
   if (FULL) assert.match(x, /Q&amp;A &lt;b&gt;/);
   assert.match(page('index.html'), /type="application\/rss\+xml"/);
+});
+
+const css = () => [...readdirSync('dist/_astro').filter(f => f.endsWith('.css')).map(f => page(`_astro/${f}`)), page('about/index.html')].join('');
+
+test('posts without metadata print no stray zero', () => {
+  assert.doesNotMatch(page('blog/hello/index.html'), /<\/h1>\s*0\s*</);
+});
+test('clipped controls keep a visible focus ring', () => {
+  const c = css();
+  assert.match(c, /a\.card:focus-visible>div/);
+  assert.match(c, /button\.chip:focus-visible\{outline-offset:-2px/);
+  assert.match(c, /\.cta[^{]*\.btn[^{]*:focus-visible[^{]*\{outline-color:#0a1c44/);
+});
+test('cms rejects links that would break', () => {
+  const c = readFileSync('public/admin/config.yml', 'utf8');
+  assert.equal(c.match(/pattern: \['\^https:\/\/'/g)?.length, 4);
+  assert.match(c, /name: email[^\n]*pattern:/);
+});
+test('a post with an empty body still builds', { skip: !FULL }, () => {
+  assert.match(page('blog/empty-body/index.html'), /1 min read/);
 });

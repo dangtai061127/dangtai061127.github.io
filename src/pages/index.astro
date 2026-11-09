@@ -142,6 +142,7 @@ section{padding:58px 0 8px;position:relative}
 .skill{display:block;background:var(--panel);border-top:2px solid var(--blue);padding:20px 20px 18px;font:700 19px/1.25 var(--disp);color:var(--text)}
 a.skill:hover{text-decoration:none;border-color:var(--cyan)}
 .skill span{display:block;font:500 13px var(--mono);color:var(--cyan);margin-top:14px}
+@media(max-width:400px){.skills{grid-template-columns:1fr!important}}
 @media(max-width:860px){
   h1{font-size:46px}
   .hero,.cases,.band{grid-template-columns:1fr}
@@ -149,6 +150,7 @@ a.skill:hover{text-decoration:none;border-color:var(--cyan)}
   .band>div+div{border-left:0;border-top:1px solid var(--line)}
   .skills{grid-template-columns:1fr 1fr}
   .emblem{order:-1}
+  .emblem .shield{width:min(160px,100%)}
   .ring,.traces{display:none}
   .chain{grid-template-columns:1fr 1fr;gap:12px;border:0}
   .big .title{font-size:32px}
