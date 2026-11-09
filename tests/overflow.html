@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>overflow and filter checks</title>
+<body>
+<script>
+const paths = ['/', '/about/', '/writeups/', '/blog/', '/writeups/inherited/', '/writeups/sample-writeup/', '/blog/hello/'];
+const say = t => { const p = document.createElement('p'); p.textContent = t; document.body.append(p); };
+const open = (url, w) => new Promise(done => {
+  const f = document.createElement('iframe');
+  f.style.cssText = `width:${w}px;height:800px;border:0`;
+  f.onload = () => done(f);
+  f.src = url;
+  document.body.append(f);
+});
+const check = (name, ok, extra = '') => say(`${ok ? 'OK' : 'FAIL'} ${name} ${extra}`);
+(async () => {
+  for (const w of [500, 1280]) for (const p of paths) {
+    const f = await open(p, w);
+    const el = f.contentDocument.documentElement;
+    check(`${w} ${p}`, el.scrollWidth <= el.clientWidth, `${el.scrollWidth}/${el.clientWidth}`);
+    f.remove();
+  }
+  const visible = d => [...d.querySelectorAll('.post')].filter(p => !p.hidden).length;
+  let f = await open('/writeups/?tag=SOC%20monitoring', 800);
+  check('tag with a space filters', visible(f.contentDocument) === 1 && f.contentDocument.querySelector('[aria-pressed=true]')?.dataset.tag === 'SOC monitoring');
+  f.remove();
+  f = await open('/writeups/?tag=%22%5D%3Cx', 800);
+  check('odd tag shows everything', visible(f.contentDocument) === f.contentDocument.querySelectorAll('.post').length && !f.contentDocument.querySelector('[aria-pressed=true]'));
+  f.remove();
+  say('DONE');
+})().catch(e => say(`FAIL harness ${e}`));
+</script>
