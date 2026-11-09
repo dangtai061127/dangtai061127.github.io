@@ -12,6 +12,7 @@ const gc = site.goatcounter !== 'YOUR-CODE';
   <title>{title ? `${title} | ${site.name}` : site.name}</title>
   <meta name="description" content={desc} />
   <link rel="icon" href="/logo.png" />
+  <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
   {gc && <script is:inline data-goatcounter={`https://${site.goatcounter}.goatcounter.com/count`} async src="//gc.zgo.at/count.js"></script>}
@@ -25,7 +26,7 @@ const gc = site.goatcounter !== 'YOUR-CODE';
 <main class:list={['wrap', { wide }]}><slot /></main>
 <footer><div class="wrap foot">
   <span>© {site.name}</span>
-  <span class="foot-links">{links.map(([l, h]) => <a href={h}>{l}</a>)}</span>
+  <span class="foot-links">{links.map(([l, h]) => <a href={h}>{l}</a>)}<a href="/rss.xml">RSS</a></span>
 </div></footer>
 <style is:global>
 :root{--bg:#050913;--panel:#0B1427;--line:#1C2D50;--blue:#2F6BFF;--cyan:#2BD4F0;--text:#E7EEFB;--soft:#A7B6D2;--dim:#71829F;--disp:'Chakra Petch',sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif}
