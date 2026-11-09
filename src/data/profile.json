@@ -1,0 +1,18 @@
+{
+  "role": "Aspiring SOC / DFIR analyst",
+  "headline": "Every intrusion leaves a trail.",
+  "lead": "",
+  "intro": "",
+  "cv": "",
+  "links": { "linkedin": "", "tryhackme": "", "btlo": "", "email": "" },
+  "skills": [
+    { "name": "SOC monitoring", "tag": "SOC monitoring" },
+    { "name": "Detection", "tag": "Detection" },
+    { "name": "DFIR", "tag": "DFIR" },
+    { "name": "Threat intelligence", "tag": "Threat intelligence" }
+  ],
+  "achievements": [],
+  "experience": [],
+  "activities": [],
+  "education": []
+}

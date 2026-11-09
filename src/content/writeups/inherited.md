@@ -17,7 +17,7 @@ mitre:
   - T1087
   - T1657
   - T1071.001
-tags: []
+tags: [DFIR, SOC monitoring]
 draft: false
 ---
 

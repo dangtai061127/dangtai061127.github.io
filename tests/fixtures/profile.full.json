@@ -1,0 +1,13 @@
+{
+  "role": "Aspiring SOC / DFIR analyst",
+  "headline": "FULL-MARKER headline",
+  "lead": "FULL-MARKER lead",
+  "intro": "FULL-MARKER intro",
+  "cv": "/uploads/cv.pdf",
+  "links": { "linkedin": "https://linkedin.com/in/x", "tryhackme": "https://tryhackme.com/p/x", "btlo": "https://blueteamlabs.online/x", "email": "x@example.com" },
+  "skills": [{ "name": "SOC monitoring", "tag": "SOC monitoring" }, { "name": "Detection", "tag": "Detection" }, { "name": "DFIR", "tag": "DFIR" }],
+  "achievements": [{ "title": "FULL-MARKER cert", "meta": "Issuer 2026", "url": "https://example.com/verify" }, { "title": "No link", "meta": "2025", "url": "" }],
+  "experience": [{ "period": "2026", "title": "FULL-MARKER role", "detail": "Did things" }],
+  "activities": [{ "kind": "Club", "title": "FULL-MARKER activity", "detail": "Member" }],
+  "education": [{ "title": "FULL-MARKER uni", "detail": "2027" }]
+}

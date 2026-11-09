@@ -15,6 +15,7 @@ collections:
       - { name: difficulty, label: Difficulty, widget: select, required: false, options: [Easy, Medium, Hard, Insane] }
       - { name: category, label: Category, widget: string, required: false }
       - { name: image, label: "Theme image", widget: image, required: false }
+      - { name: featured, label: "Featured on home page", widget: boolean, required: false, default: false }
       - { name: tools, label: Tools, widget: list, required: false }
       - { name: mitre, label: "MITRE ATT&CK IDs (e.g. T1059.001)", widget: list, required: false }
       - { name: tags, label: Tags, widget: list, required: false }
@@ -32,3 +33,62 @@ collections:
       - { name: tags, label: Tags, widget: list, required: false }
       - { name: draft, label: "Draft (hidden from site)", widget: boolean, default: true }
       - { name: body, label: Content, widget: markdown }
+  - name: profile
+    label: Profile
+    editor: { preview: false }
+    files:
+      - name: profile
+        label: Profile
+        file: src/data/profile.json
+        fields:
+          - { name: role, label: Role, widget: string }
+          - { name: headline, label: Headline, widget: string }
+          - { name: lead, label: "Short introduction (home)", widget: text, required: false }
+          - { name: intro, label: "Full introduction (About)", widget: text, required: false }
+          - { name: cv, label: "CV file", widget: file, required: false }
+          - name: links
+            label: Links
+            widget: object
+            fields:
+              - { name: linkedin, label: LinkedIn URL, widget: string, required: false }
+              - { name: tryhackme, label: TryHackMe URL, widget: string, required: false }
+              - { name: btlo, label: BTLO URL, widget: string, required: false }
+              - { name: email, label: Email address, widget: string, required: false }
+          - name: skills
+            label: Skills
+            widget: list
+            required: false
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: tag, label: "Writeup tag that proves it", widget: string }
+          - name: achievements
+            label: "Achievements (first three show on the home page)"
+            widget: list
+            required: false
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: meta, label: "Issuer and year", widget: string, required: false }
+              - { name: url, label: "Verification URL", widget: string, required: false }
+          - name: experience
+            label: Experience
+            widget: list
+            required: false
+            fields:
+              - { name: period, label: Period, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: detail, label: Detail, widget: text, required: false }
+          - name: activities
+            label: Activities
+            widget: list
+            required: false
+            fields:
+              - { name: kind, label: Kind, widget: string, required: false }
+              - { name: title, label: Title, widget: string }
+              - { name: detail, label: Detail, widget: text, required: false }
+          - name: education
+            label: Education
+            widget: list
+            required: false
+            fields:
+              - { name: title, label: "School and major", widget: string }
+              - { name: detail, label: Detail, widget: string, required: false }

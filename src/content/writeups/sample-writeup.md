@@ -14,7 +14,7 @@ mitre:
   - T1059.010
   - T1055.012
   - T1620
-tags: []
+tags: [DFIR]
 draft: false
 ---
 

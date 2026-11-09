@@ -4,7 +4,7 @@ const base = { title: z.string(), date: z.coerce.date(), summary: z.string(), ta
 export const collections = {
   writeups: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/writeups' }),
-    schema: z.object({ ...base, platform: z.string().optional(), difficulty: z.string().optional(), category: z.string().optional(), image: z.string().optional(), tools: z.array(z.string()).default([]), mitre: z.array(z.string()).default([]) }),
+    schema: z.object({ ...base, platform: z.string().optional(), difficulty: z.string().optional(), category: z.string().optional(), image: z.string().optional(), featured: z.boolean().default(false), tools: z.array(z.string()).default([]), mitre: z.array(z.string()).default([]) }),
   }),
   blog: defineCollection({ loader: glob({ pattern: '**/*.md', base: './src/content/blog' }), schema: z.object(base) }),
 };
