@@ -24,8 +24,9 @@ test('nav and footer', () => {
 test('home shows real cases and hides empty sections', () => {
   const h = page('index.html');
   assert.match(h, /Inherited/);
-  assert.match(h, /attack\.mitre\.org\/techniques\/T1190/);
-  assert.match(h, /\+3/);
+  // the full build's long-title fixture is newest, so it takes the big card instead of Inherited
+  if (!FULL) assert.match(h, /attack\.mitre\.org\/techniques\/T1190/);
+  if (!FULL) assert.match(h, /\+3/);
   assert.match(h, /\/writeups\/\?tag=SOC%20monitoring/);
   assert.doesNotMatch(h, /\/writeups\/\?tag=Detection/);
   assert.doesNotMatch(h, /DRAFT-MARKER/);
@@ -76,7 +77,9 @@ test('clipped controls keep a visible focus ring', () => {
 test('cms rejects links that would break', () => {
   const c = readFileSync('public/admin/config.yml', 'utf8');
   assert.equal(c.match(/pattern: \['\^https:\/\/'/g)?.length, 4);
-  assert.match(c, /name: email[^\n]*pattern:/);
+  const email = new RegExp(c.match(/name: email[^\n]*pattern: \['([^']+)'/)[1]);
+  assert.ok(email.test('sam@site.com'));
+  assert.ok(!email.test('mailto:x@y'));
 });
 test('a post with an empty body still builds', { skip: !FULL }, () => {
   assert.match(page('blog/empty-body/index.html'), /1 min read/);

@@ -53,7 +53,7 @@ collections:
               - { name: linkedin, label: LinkedIn URL, widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
               - { name: tryhackme, label: TryHackMe URL, widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
               - { name: btlo, label: BTLO URL, widget: string, required: false, pattern: ['^https://', 'Must start with https://'] }
-              - { name: email, label: Email address, widget: string, required: false, pattern: ['^[^@s:]+@[^@s]+$', 'Address only, for example you@example.com'] }
+              - { name: email, label: Email address, widget: string, required: false, pattern: ['^[^@\s:]+@[^@\s]+$','Address only, for example you@example.com'] }
           - name: skills
             label: Skills
             widget: list
