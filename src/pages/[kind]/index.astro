@@ -23,5 +23,12 @@ const title = kind === 'writeups' ? 'Writeups' : 'Blog';
 </Base>
 <script is:inline>
 const f=document.getElementById('filters');
-f&&f.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';f.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed',String(on));document.querySelectorAll('.post').forEach(p=>{p.hidden=on&&!p.dataset.tags.split(',').includes(b.dataset.tag)})});
+if(f){
+  const bs=[...f.querySelectorAll('button')];
+  const apply=(b,on)=>{bs.forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed',String(on));document.querySelectorAll('.post').forEach(p=>{p.hidden=on&&!p.dataset.tags.split(',').includes(b.dataset.tag)})};
+  f.addEventListener('click',e=>{const b=e.target.closest('button');if(b)apply(b,b.getAttribute('aria-pressed')!=='true')});
+  const tag=new URLSearchParams(location.search).get('tag');
+  const b=bs.find(x=>x.dataset.tag===tag);
+  if(b)apply(b,true);
+}
 </script>
