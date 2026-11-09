@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import { links, profile, site } from '../site';
+const email = profile.links.email;
+const sections = ['experience', 'achievements', 'activities', 'education'].filter(s => (profile as any)[s].length);
+const num = (s: string) => String(sections.indexOf(s) + 1).padStart(2, '0');
+---
+<Base wide title="About">
+  <div class="about">
+    <div class="card idc"><div>
+      <div class="shield"><img src="/logo.png" width="512" height="512" alt="" /></div>
+      <div class="title">{site.name}</div><span class="tag">{profile.role}</span>
+      <ul>{links.map(([l, h]) => <li><a href={h}>{l} ↗</a></li>)}</ul>
+      {profile.cv && <a class="btn" href={profile.cv}>Download CV</a>}
+    </div></div>
+    <div>
+      <h1 class="sr">About</h1>
+      {profile.intro && <section><p class="intro">{profile.intro}</p></section>}
+
+      {profile.experience.length > 0 && (
+        <section>
+          <div class="h"><small>{num('experience')}</small><h2>Experience</h2></div>
+          <div class="tl">
+            {profile.experience.map((e: any) => (
+              <div class="ev"><small>{e.period}</small><div class="title">{e.title}</div>{e.detail && <p>{e.detail}</p>}</div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {profile.achievements.length > 0 && (
+        <section>
+          <div class="h"><small>{num('achievements')}</small><h2>Achievements</h2></div>
+          <div class="ach">
+            {profile.achievements.map((a: any) => (
+              <div><div class="badge"></div><div>
+                <div class="t">{a.title}</div><small>{a.meta}</small>
+                {a.url && <a href={a.url}>Verify ↗</a>}
+              </div></div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {profile.activities.length > 0 && (
+        <section>
+          <div class="h"><small>{num('activities')}</small><h2>Activities</h2></div>
+          <div class="two">
+            {profile.activities.map((a: any) => (
+              <div class="card"><div><span class="tag">{a.kind}</span><div class="title">{a.title}</div>{a.detail && <p>{a.detail}</p>}</div></div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {profile.education.length > 0 && (
+        <section>
+          <div class="h"><small>{num('education')}</small><h2>Education</h2></div>
+          {profile.education.map((e: any) => <div class="edu"><div class="title">{e.title}</div>{e.detail && <p>{e.detail}</p>}</div>)}
+        </section>
+      )}
+
+      {email && <div class="cta"><b>Hiring for a blue team role?</b><a class="btn" href={`mailto:${email}`}>Email me</a></div>}
+    </div>
+  </div>
+</Base>
+
+<style>
+:global(.bg){background:radial-gradient(700px 480px at 10% 120px,#123073 0,transparent 72%)}
+.about{display:grid;grid-template-columns:300px 1fr;gap:62px;padding-top:30px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.idc{align-self:start}.idc>div{padding:26px 26px 30px}
+.idc .shield{width:210px;margin:-10px auto 4px}
+.idc .title{font-size:23px;margin:0 0 2px}
+.idc ul{list-style:none;margin:20px 0 22px;padding:0;font:500 13.5px var(--mono)}
+.idc li{padding:9px 0;border-top:1px solid #ffffff12}
+.idc li a{color:var(--soft)}
+.idc .btn{display:block;text-align:center;margin:0}
+.intro{font:500 29px/1.35 var(--disp);margin:0}
+section{padding-top:50px;position:relative}
+section:first-of-type{padding-top:6px}
+.tl{border-left:1px solid #2BD4F055;margin-left:4px}
+.ev{position:relative;padding:0 0 32px 32px}
+.ev:last-child{padding-bottom:6px}
+.ev:before{content:'';position:absolute;left:-5px;top:9px;width:9px;height:9px;background:var(--cyan);transform:rotate(45deg);box-shadow:0 0 12px var(--cyan)}
+.ev small{font:500 13px var(--mono);color:var(--dim)}
+.ev .title{font-size:23px;margin:3px 0 6px}
+.ev p,.edu p{margin:0;color:var(--soft)}
+.edu+.edu{margin-top:18px}.edu .title{margin:0 0 4px;font-size:23px}
+.ach{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.ach>div{display:flex;gap:16px;align-items:center}
+.t{font:700 20px/1.2 var(--disp)}
+.ach small{font:500 12.5px var(--mono);color:var(--dim)}
+.ach a{display:block;font:500 13px var(--mono)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.two .card>div{padding:24px 26px}.two .title{font-size:21px}
+.cta{margin-top:60px;padding:38px 42px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(110deg,#1a3f9c,#0c7fb0);clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,26px 100%,0 calc(100% - 26px))}
+.cta b{font:700 30px/1.15 var(--disp)}
+.cta .btn{background:#fff;color:#0a1c44;margin:0;white-space:nowrap}
+@media(max-width:860px){
+  .about,.ach,.two{grid-template-columns:1fr}
+  .about{gap:36px}
+  .intro{font-size:23px}
+  .cta{flex-direction:column;align-items:flex-start;padding:30px 26px}
+  .cta b{font-size:24px}
+}
+</style>
