@@ -12,3 +12,11 @@ test('cms exposes profile and featured', () => {
   assert.match(c, /file: src\/data\/profile\.json/);
   assert.match(c, /name: featured/);
 });
+
+test('nav and footer', () => {
+  const h = page('index.html');
+  assert.match(h, /href="\/about\/"/);
+  assert.match(h, /Chakra\+Petch/);
+  assert.doesNotMatch(h, /JetBrains/);
+  if (!FULL) assert.doesNotMatch(h, /linkedin/i);
+});
