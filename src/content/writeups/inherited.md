@@ -29,6 +29,7 @@ draft: false
 |---|---|
 | **Platform** | Blue Team Labs Online (BTLO) |
 | **Lab** | Inherited |
+|**Difficulty** | Hard | 
 | **Category** | Incident Response / Log Analysis |
 | **Author** | Đặng Đắc Tài |
 | **Date** | 6/11/2026 |
