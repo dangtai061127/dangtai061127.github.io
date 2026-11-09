@@ -76,11 +76,45 @@ test('clipped controls keep a visible focus ring', () => {
 });
 test('cms rejects links that would break', () => {
   const c = readFileSync('public/admin/config.yml', 'utf8');
-  assert.equal(c.match(/pattern: \['\^https:\/\/'/g)?.length, 4);
+  assert.equal(c.match(/pattern: \['\^https:\/\/'/g)?.length, 6);
   const email = new RegExp(c.match(/name: email[^\n]*pattern: \['([^']+)'/)[1]);
   assert.ok(email.test('sam@site.com'));
   assert.ok(!email.test('mailto:x@y'));
 });
 test('a post with an empty body still builds', { skip: !FULL }, () => {
   assert.match(page('blog/empty-body/index.html'), /1 min read/);
+});
+
+test('neon case palette is defined', () => {
+  const c = css();
+  assert.match(c, /--a2:#8b5cf6/i);
+  assert.match(c, /--a3:#f0468f/i);
+});
+test('platform profiles are buttons', () => {
+  assert.match(page('index.html'), /class="pbtn"[^>]*href="https:\/\/github\.com\/dangtai061127"/);
+  assert.match(page('about/index.html'), /class="pbtn"/);
+  const c = readFileSync('public/admin/config.yml', 'utf8');
+  assert.match(c, /name: hackthebox/);
+  assert.match(c, /name: cyberdefenders/);
+  if (FULL) for (const p of ['index.html', 'about/index.html']) {
+    assert.match(page(p), /class="pbtn"[^>]*href="https:\/\/app\.hackthebox\.com\/x"/);
+    assert.match(page(p), /class="pbtn"[^>]*href="https:\/\/cyberdefenders\.org\/x"/);
+  }
+});
+test('writeups share one tag scheme and show their tags', () => {
+  const list = page('writeups/index.html');
+  for (const t of ['Log analysis', 'Malware analysis', 'Digital forensics']) assert.match(list, new RegExp(`<span class="chip[^>]*>${t}<`));
+  assert.match(page('index.html'), /<span class="chip[^>]*>Malware analysis</);
+});
+test('difficulty has a colored label', () => {
+  assert.match(page('writeups/index.html'), /class="diff hard"/);
+  assert.match(page('writeups/sample-writeup/index.html'), /class="diff hard"/);
+  if (!FULL) assert.match(page('index.html'), /class="diff hard"/);
+});
+test('theme images appear on cards and article banners', { skip: FULL }, () => {
+  const h = page('index.html');
+  assert.match(h, /<img[^>]*storage\/labs\/77f1b838/);
+  assert.match(h, /<img[^>]*storage\/labs\/744b7fa5/);
+  assert.match(page('writeups/inherited/index.html'), /<img class="banner"[^>]*storage\/labs\/77f1b838/);
+  assert.doesNotMatch(page('blog/hello/index.html'), /class="banner"/);
 });

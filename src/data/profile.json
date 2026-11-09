@@ -4,7 +4,7 @@
   "lead": "",
   "intro": "",
   "cv": "",
-  "links": { "linkedin": "", "tryhackme": "", "btlo": "", "email": "" },
+  "links": { "linkedin": "", "tryhackme": "", "hackthebox": "", "cyberdefenders": "", "btlo": "", "email": "" },
   "skills": [
     { "name": "SOC monitoring", "tag": "SOC monitoring" },
     { "name": "Detection", "tag": "Detection" },

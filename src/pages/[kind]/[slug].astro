@@ -28,12 +28,13 @@ const hasMeta = !!(d.platform || d.difficulty || d.category || d.tools?.length |
       </nav>
     )}
     <article>
+      {d.image && <img class="banner" src={d.image} alt="" />}
       <p class="pmeta">{d.date.toISOString().slice(0, 10)} · {minutes} min read <span id="views"></span></p>
       <h1>{d.title}</h1>
       {hasMeta && (
         <dl class="meta cut">
           {d.platform && <div><dt>Platform</dt><dd>{d.platform}</dd></div>}
-          {d.difficulty && <div><dt>Difficulty</dt><dd>{d.difficulty}</dd></div>}
+          {d.difficulty && <div><dt>Difficulty</dt><dd><span class:list={['diff', d.difficulty.toLowerCase()]}>{d.difficulty}</span></dd></div>}
           {d.category && <div><dt>Category</dt><dd>{d.category}</dd></div>}
           {d.tools?.length > 0 && <div><dt>Tools</dt><dd>{d.tools.join(', ')}</dd></div>}
           {mitre.length > 0 && <div><dt>MITRE ATT&CK</dt><dd>{mitre.map((m: any, i: number) => <><a href={m.url}>{m.id}</a>{i < mitre.length - 1 ? ', ' : ''}</>)}</dd></div>}
@@ -53,6 +54,7 @@ const hasMeta = !!(d.platform || d.difficulty || d.category || d.tools?.length |
 <style>
 .art{padding-top:1.5rem;max-width:800px;margin:0 auto}
 article{min-width:0}
+.banner{display:block;width:100%;aspect-ratio:21/9;object-fit:cover;object-position:left top;border:1px solid var(--line);margin-bottom:1.25rem}
 .toc{font:500 13.5px/1.4 var(--disp);border-left:1px solid var(--line);padding-left:16px;margin-bottom:2rem}
 .toc p{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
 .toc a{display:block;color:var(--soft);padding:4px 0}

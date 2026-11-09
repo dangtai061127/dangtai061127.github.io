@@ -4,7 +4,7 @@
   "lead": "FULL-MARKER lead",
   "intro": "FULL-MARKER intro",
   "cv": "/uploads/cv.pdf",
-  "links": { "linkedin": "https://linkedin.com/in/x", "tryhackme": "https://tryhackme.com/p/x", "btlo": "https://blueteamlabs.online/x", "email": "x@example.com" },
+  "links": { "linkedin": "https://linkedin.com/in/x", "tryhackme": "https://tryhackme.com/p/x", "hackthebox": "https://app.hackthebox.com/x", "cyberdefenders": "https://cyberdefenders.org/x", "btlo": "https://blueteamlabs.online/x", "email": "x@example.com" },
   "skills": [{ "name": "SOC monitoring", "tag": "SOC monitoring" }, { "name": "Detection", "tag": "Detection" }, { "name": "DFIR", "tag": "DFIR" }],
   "achievements": [{ "title": "FULL-MARKER cert", "meta": "Issuer 2026", "url": "https://example.com/verify" }, { "title": "No link", "meta": "2025", "url": "" }],
   "experience": [{ "period": "2026", "title": "FULL-MARKER role", "detail": "Did things" }],

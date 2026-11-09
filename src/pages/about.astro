@@ -10,7 +10,7 @@ const num = (s: string) => String(sections.indexOf(s) + 1).padStart(2, '0');
     <div class="card idc"><div>
       <div class="shield"><img src="/logo.png" width="512" height="512" alt="" /></div>
       <div class="title">{site.name}</div><span class="tag">{profile.role}</span>
-      <ul>{links.map(([l, h]) => <li><a href={h}>{l} ↗</a></li>)}</ul>
+      <div class="plats">{links.map(([l, h]) => <a class="pbtn" href={h}>{l}</a>)}</div>
       {profile.cv && <a class="btn" href={profile.cv}>Download CV</a>}
     </div></div>
     <div>
@@ -66,20 +66,20 @@ const num = (s: string) => String(sections.indexOf(s) + 1).padStart(2, '0');
 </Base>
 
 <style>
-:global(.bg){background:radial-gradient(700px 480px at 10% 120px,#123073 0,transparent 72%)}
+:global(.bg){background:radial-gradient(700px 480px at 10% 120px,#2c1a6b 0,transparent 72%)}
 .about{display:grid;grid-template-columns:300px 1fr;gap:62px;padding-top:30px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .idc{align-self:start}.idc>div{padding:26px 26px 30px}
 .idc .shield{width:210px;margin:-10px auto 4px}
 .idc .title{font-size:23px;margin:0 0 2px}
-.idc ul{list-style:none;margin:20px 0 22px;padding:0;font:500 13.5px var(--mono)}
-.idc li{padding:9px 0;border-top:1px solid #ffffff12}
-.idc li a{color:var(--soft)}
+.idc .plats{margin:20px 0 22px}
+
+
 .idc .btn{display:block;text-align:center;margin:0}
 .intro{font:500 29px/1.35 var(--disp);margin:0}
 section{padding-top:50px;position:relative}
 section:first-of-type{padding-top:6px}
-.tl{border-left:1px solid #2BD4F055;margin-left:4px}
+.tl{border-left:1px solid #8B5CF688;margin-left:4px}
 .ev{position:relative;padding:0 0 32px 32px}
 .ev:last-child{padding-bottom:6px}
 .ev:before{content:'';position:absolute;left:-5px;top:9px;width:9px;height:9px;background:var(--cyan);transform:rotate(45deg);box-shadow:0 0 12px var(--cyan)}
@@ -94,7 +94,7 @@ section:first-of-type{padding-top:6px}
 .ach a{display:block;font:500 13px var(--mono)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .two .card>div{padding:24px 26px}.two .title{font-size:21px}
-.cta{margin-top:60px;padding:38px 42px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(110deg,#1a3f9c,#0c7fb0);clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,26px 100%,0 calc(100% - 26px))}
+.cta{margin-top:60px;padding:38px 42px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(110deg,#5b2bc9,#b92a78);clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,26px 100%,0 calc(100% - 26px))}
 .cta b{font:700 30px/1.15 var(--disp)}
 .cta .btn{background:#fff;color:#0a1c44;margin:0;white-space:nowrap}
 .cta .btn:focus-visible{outline-color:#0a1c44}

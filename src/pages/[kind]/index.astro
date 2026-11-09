@@ -14,8 +14,8 @@ const title = kind === 'writeups' ? 'Writeups' : 'Blog';
   {posts.map((p: any) => (
     <a class:list={['post', { 'has-img': p.data.image }]} href={`/${kind}/${p.id}/`} data-tags={p.data.tags.join(',')}>
       <div>
-        <time>{p.data.date.toISOString().slice(0, 10)}{p.data.platform ? `  ${p.data.platform}` : ''}{p.data.difficulty ? `  ${p.data.difficulty}` : ''}</time>
-        <h2>{p.data.title}</h2><p>{p.data.summary}</p>
+        <time>{p.data.date.toISOString().slice(0, 10)}{p.data.platform ? `  ${p.data.platform}` : ''}</time> {p.data.difficulty && <span class:list={['diff', p.data.difficulty.toLowerCase()]}>{p.data.difficulty}</span>}
+        <h2>{p.data.title}</h2><p>{p.data.summary}</p>{p.data.tags.map((t: string) => <span class="chip cut">{t}</span>)}
       </div>
       {p.data.image && <img src={p.data.image} alt="" loading="lazy" />}
     </a>

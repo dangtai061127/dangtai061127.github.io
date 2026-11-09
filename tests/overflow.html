@@ -21,7 +21,7 @@ const check = (name, ok, extra = '') => say(`${ok ? 'OK' : 'FAIL'} ${name} ${ext
     f.remove();
   }
   let s = await open('/', 375, 667);
-  const soc = s.contentDocument.querySelector('.soc').getBoundingClientRect().bottom;
+  const d = s.contentDocument, soc = Math.max(d.querySelector('.acts').getBoundingClientRect().bottom, d.querySelector('.plats').getBoundingClientRect().top);
   check('home actions fit the first phone screen', soc <= 667, soc);
   s.remove();
   const visible = d => [...d.querySelectorAll('.post')].filter(p => !p.hidden).length;

@@ -17,7 +17,7 @@ mitre:
   - T1087
   - T1657
   - T1071.001
-tags: [DFIR, SOC monitoring]
+tags: [DFIR, SOC monitoring, Log analysis]
 draft: false
 ---
 
