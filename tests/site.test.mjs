@@ -40,3 +40,24 @@ test('about hides empty sections', () => {
     FULL ? assert.match(h, new RegExp(s)) : assert.doesNotMatch(h, new RegExp(s));
   if (FULL) assert.match(h, /Verify/);
 });
+
+test('article extras', () => {
+  const w = page('writeups/inherited/index.html');
+  assert.match(w, /class="toc"/);
+  assert.match(w, /\d+ min read/);
+  assert.match(w, /class="pager"/);
+  assert.doesNotMatch(w, /DRAFT-MARKER/);
+  const b = page('blog/hello/index.html');
+  assert.doesNotMatch(b, /class="toc"/);
+  if (!FULL) assert.doesNotMatch(b, /class="pager"/);
+});
+
+test('rss is well formed', () => {
+  const x = page('rss.xml');
+  assert.match(x, /<rss version="2\.0"/);
+  assert.match(x, /https:\/\/dangtai061127\.github\.io\/writeups\/inherited\//);
+  assert.doesNotMatch(x, /&(?!amp;|lt;|gt;|quot;|apos;)/);
+  assert.doesNotMatch(x, /DRAFT-MARKER/);
+  if (FULL) assert.match(x, /Q&amp;A &lt;b&gt;/);
+  assert.match(page('index.html'), /type="application\/rss\+xml"/);
+});
