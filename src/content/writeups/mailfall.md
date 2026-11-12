@@ -1,9 +1,11 @@
 ---
 title: MailFall
 date: 2026-11-12
-summary: An attacker moves from an internal workstation to the SmarterMail server, exploits an unauthenticated file upload (CVE-2025-52691) to plant a web shell, escalates to SYSTEM with GodPotato, installs GotoHTTP as a service, then creates a hidden mail admin and phishes the domain's users from inside.
+summary: A hard DFIR investigation stemming from identified anomalous authentication activity and suspicious process executions consistent with an active adversary operating within the internal network.
 platform: BTLO
+difficulty: ''
 category: Incident Response / Digital Forensics
+image: https://blueteamlabs.online/storage/labs/69c67ae7ade4451d11cec688bf0f6ef4e2c8ebc4.png
 featured: false
 tools:
   - EvtxECmd
