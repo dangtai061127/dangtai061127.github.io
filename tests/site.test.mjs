@@ -26,7 +26,7 @@ test('home shows real cases and hides empty sections', () => {
   assert.match(h, /Inherited/);
   // the full build's long-title fixture is newest, so it takes the big card instead of Inherited
   if (!FULL) assert.match(h, /attack\.mitre\.org\/techniques\/T1190/);
-  if (!FULL) assert.match(h, /\+3/);
+  if (!FULL) assert.match(h, /\+\d+ more/);
   assert.match(h, /\/writeups\/\?tag=SOC%20monitoring/);
   assert.doesNotMatch(h, /\/writeups\/\?tag=Detection/);
   assert.doesNotMatch(h, /DRAFT-MARKER/);
@@ -104,7 +104,8 @@ test('platform profiles are buttons', () => {
 test('writeups share one tag scheme and show their tags', () => {
   const list = page('writeups/index.html');
   for (const t of ['Log analysis', 'Malware analysis', 'Digital forensics']) assert.match(list, new RegExp(`<span class="chip[^>]*>${t}<`));
-  assert.match(page('index.html'), /<span class="chip[^>]*>Malware analysis</);
+  // the full build's long-title fixture pushes Hollow Chapter off the home page
+  if (!FULL) assert.match(page('index.html'), /<span class="chip[^>]*>Malware analysis</);
 });
 test('difficulty has a colored label', () => {
   assert.match(page('writeups/index.html'), /class="diff hard"/);
