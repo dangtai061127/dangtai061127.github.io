@@ -5,6 +5,7 @@ summary: A developer at an energy firm runs a "ready to deploy" e-commerce repo 
 platform: BTLO
 difficulty: Hard
 category: Incident Response / Malware Analysis
+image: https://blueteamlabs.online/storage/labs/d6a8cc0824a04a6bbb4624f1c8d89ee80d6962b9.png
 featured: false
 tools:
   - Volatility 3
@@ -12,8 +13,6 @@ tools:
   - Wireshark
   - CyberChef
   - Node.js
-  - PowerShell
-  - BscScan / TronGrid
 mitre:
   - T1204.002
   - T1059.007
@@ -32,14 +31,12 @@ mitre:
   - T1567
   - T1071.001
 tags:
-  - DFIR
-  - Malware analysis
   - Digital forensics
 draft: false
 ---
 
-|||
-|---|---|
+|  |  |
+| --- | --- |
 | **Platform** | Blue Team Labs Online (BTLO) |
 | **Lab** | TXDrop |
 | **Category** | Incident Response / Malware Analysis |
@@ -51,7 +48,7 @@ draft: false
 
 ## 1. TL;DR
 
-Khaled, a backend developer at EZ-CERT, searched Bing for a *"deploy ecommerce website ready to go github repo"*, downloaded **`github.com/NotMoSala/ShoeNikta`** and ran `npm run dev` in its `client` folder at **15:36:39 UTC** on 30 March 2026. Vite loaded **`tailwind.config.js`**, which carries an obfuscated loader after a long run of whitespace on its last line.
+Khaled, a backend developer at EZ-CERT, searched Bing for a _"deploy ecommerce website ready to go github repo"_, downloaded **`github.com/NotMoSala/ShoeNikta`** and ran `npm run dev` in its `client` folder at **15:36:39 UTC** on 30 March 2026. Vite loaded **`tailwind.config.js`**, which carries an obfuscated loader after a long run of whitespace on its last line.
 
 That loader (stage 2) fetched **`http://23.27.20.143:27017/$/boot`** with the campaign header **`Sec-V: A9`**, XOR-decrypted the reply with **`ThZG+0jfXE6VAGOJ`** and ran it. Stage 3 sent the host's environment variables to **`/snv`**, checked running processes for a blocked name, then started two things:
 
@@ -108,7 +105,7 @@ The SOC flagged outbound HTTP on a non-standard port from a developer workstatio
 
 ### Phase 1 — The lure: a "ready to go" GitHub repo
 
-`windows.filescan` lists the Edge `History` database in Khaled's profile. Dumping it with `windows.dumpfiles` and searching it for "github" gives the browsing history: a Bing search for *"deploy ecommerce website ready to go github repo"*, a few candidates (`saleor/saleor`, `hasan-py/Hayroo`), then **`https://github.com/NotMoSala/ShoeNikta`** and the download of its ZIP from `codeload.github.com/NotMoSala/ShoeNikta/zip/refs/heads/main`.
+`windows.filescan` lists the Edge `History` database in Khaled's profile. Dumping it with `windows.dumpfiles` and searching it for "github" gives the browsing history: a Bing search for _"deploy ecommerce website ready to go github repo"_, a few candidates (`saleor/saleor`, `hasan-py/Hayroo`), then **`https://github.com/NotMoSala/ShoeNikta`** and the download of its ZIP from `codeload.github.com/NotMoSala/ShoeNikta/zip/refs/heads/main`.
 
 ```bash
 python3 vol.py -f EZ-CERT-20260330-154006.raw -o out/ windows.dumpfiles --virtaddr 0xdb02fc40e850
@@ -281,7 +278,7 @@ Nothing in the loader points at an attacker server. It reads two public blockcha
 
 3. In CyberChef: From Hex, keep what follows `?.?`, then XOR with `cA]2!+37v,-szeU}`. The result is the RAT's source, still obfuscated. A JavaScript deobfuscator and beautifier make it readable (about 1,100 lines).
 
-![CyberChef: From Hex, split on ?.?, XOR with cA]2!+37v,-szeU}](/uploads/txdrop-12.png)
+![a\](/uploads/txdrop-12.png)
 
 ### Phase 6 — DEV#POPPER RAT
 
@@ -320,8 +317,9 @@ When `axios` or `socket.io-client` is missing, the RAT installs it with `npm --p
 | `ss_upf:` / `ss_upd:` | Upload a file / a directory to `http://136.0.9.8:27017/u/f` |
 | `ss_inz:` / `ss_inzx:` | Inject / remove the loader in a given file |
 | `ss_connect:` | Switch to another C2 |
-| `ss_eval:` / `ss_eval64:` | Run JavaScript (plain / Base64) |
-| `*cmd` / anything else | Run a detached process / a shell command and return the output |
+
+| `ss_eval:` / `ss_eval64:` | Run JavaScript (plain / Base64) |\`
+`| `\*cmd\` / anything else | Run a detached process / a shell command and return the output |
 
 **Clipboard watcher.** The WebSocket stream shows the operator sending one `ss_eval64` command.
 
@@ -345,7 +343,7 @@ The RAT has the same capability built in as `_CB`, used by `ss_cb`:
 
 | App | File (Windows) | Label | `catch` name |
 | --- | --- | --- | --- |
-| VS Code | `%LOCALAPPDATA%\Programs\Microsoft VS Code\resources\app\node_modules\@vscode\deviceid\dist\index.js` | `app-vscode` | `VSCode` |
+| VS Code | \`%LOCALAPPDATA%\Programs\Microsoft VS Code\resources\app\node_modules@vscode\deviceid\dist\index.js\` | `app-vscode` | `VSCode` |
 | Cursor | `%LOCALAPPDATA%\Programs\cursor\…\@vscode\deviceid\dist\index.js` | `app-cursor` | `cursor` |
 | Antigravity | `%LOCALAPPDATA%\Programs\Antigravity\…\@vscode\deviceid\dist\index.js` | `app-antigravity` | `antigravity` |
 | Discord | `%LOCALAPPDATA%\discord\app-*\modules\discord_desktop_core\index.js` | `app-discord` | `discord` |
@@ -465,7 +463,7 @@ Calling `getMe` with that token identifies the bot: `id 7870147428`, `first_name
 
 ## 6. Attribution
 
-The chain matches eSentire TRU's March 2026 report *"DEV#POPPER RAT and OmniStealer (Everyday I'm Shufflin')"*, about a victim in the same sector. That report describes a fake e-commerce repo with the loader in `tailwind.config.js`, `/$/boot` on `23.27.20.143:27017` with a `Sec-V` header, the keys `ThZG+0jfXE6VAGOJ`, `cA]2!+37v,-szeU}` and `9KyASt+7D0mjPHFY`, the same TRON → BNB Chain transaction `0x804b000a…`, the same C2 table and the same blocked-process MD5. eSentire attributes it with high confidence to a North Korean state-sponsored group whose main motive is money. The fake-repo lure aimed at developers matches the public reporting on North Korea's "Contagious Interview" activity.
+The chain matches eSentire TRU's March 2026 report _"DEV#POPPER RAT and OmniStealer (Everyday I'm Shufflin')"_, about a victim in the same sector. That report describes a fake e-commerce repo with the loader in `tailwind.config.js`, `/$/boot` on `23.27.20.143:27017` with a `Sec-V` header, the keys `ThZG+0jfXE6VAGOJ`, `cA]2!+37v,-szeU}` and `9KyASt+7D0mjPHFY`, the same TRON → BNB Chain transaction `0x804b000a…`, the same C2 table and the same blocked-process MD5. eSentire attributes it with high confidence to a North Korean state-sponsored group whose main motive is money. The fake-repo lure aimed at developers matches the public reporting on North Korea's "Contagious Interview" activity.
 
 ***
 
@@ -492,8 +490,10 @@ The chain matches eSentire TRU's March 2026 report *"DEV#POPPER RAT and OmniStea
 | MD5 | `9a47bb48b7b8ca41fc138fd3372e8cc0` | Blocked process name |
 | File | `%LOCALAPPDATA%\Temp\tmp7A863DD1.tmp` | Stealer lock file |
 | File | `C:\Users\<user>\.npm\<host>$<user>_<yymmdd_HHMMSS>#<crc>.zip` | Stolen data archive |
-| Password | `,./,./,./` | Archive password |
-| Folder | `%USERPROFILE%\.node_modules` | RAT's dependencies |
+
+| Password | `,./,./,./` | Archive password |\`
+`| Folder | `%USERPROFILE%.node_modules\` | RAT's dependencies |
+
 | Marker | `/*C250619A*/` (also `C250617A`, `C250618A`) | Injected into Electron app files |
 | Telegram | bot `7870147428` (`@file_1018_bot`), chat `7699029999` | Fallback exfiltration |
 
@@ -533,7 +533,7 @@ The chain matches eSentire TRU's March 2026 report *"DEV#POPPER RAT and OmniStea
 
 ## 10. References
 
-- eSentire TRU, *North Korean APT Malware Analysis: DEV#POPPER RAT and OmniStealer (Everyday I'm Shufflin')*: https://www.esentire.com/blog/north-korean-apt-malware-analysis-dev-popper-rat-and-omnistealer-everyday-im-shufflin
+- eSentire TRU, _North Korean APT Malware Analysis: DEV#POPPER RAT and OmniStealer (Everyday I'm Shufflin')_: https://www.esentire.com/blog/north-korean-apt-malware-analysis-dev-popper-rat-and-omnistealer-everyday-im-shufflin
 - BTLO, TXDrop: https://blueteamlabs.online/home/investigation/txdrop-dbb8ad6a56
 - Volatility 3: https://github.com/volatilityfoundation/volatility3
 - MemProcFS: https://github.com/ufrisk/MemProcFS
