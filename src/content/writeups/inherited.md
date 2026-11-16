@@ -299,32 +299,7 @@ The interval is **2,440 s** (40 min 40 s), the signature of an automated session
 
 ***
 
-## 6. Lab Q&A
-
-| \# | Question | Answer |
-| --- | --- | --- |
-| 1 | One day in the ActivID audit export contains far more events than any other day. Give that date, and the total number of events recorded on it. (6 points) | `2026-02-02`, `51309` |
-| 2 | Almost all of that day's events are a single event type, recorded under one platform service identity, with a new session id for every event. Give that identity's numeric user id, and the authenticator type shown on those events. (5 points) | `77`, `AT_SYSAUD` |
-| 3 | The raw WAF traffic for that day shows one source address sending the same request over and over through the night. Give the path it requested, and how many times that source requested it. (6 points) | `/idp/HVTPROD/authn`, `47213` |
-| 4 | Shortly after that stopped, the same source reached an interface on the authentication server that has no business being reachable from the internet. Give the full path, including any query string, of the first request to that interface that was answered with HTTP 200. (6 points) | `/ac-iasp-backend-jaxws/UserManager?wsdl` |
-| 5 | The attacker's first attempts to call that interface did not work. How many failed before one succeeded, and what HTTP status did the failures return? (5 points) | `3`, `500` |
-| 6 | What you have reconstructed is a publicly documented flaw in this product. Give the identifier of the vendor hotfix that fixes it. (5 points) | `FIXS2510005` |
-| 7 | Nineteen days later the attacker called that pair of interfaces again — two requests to each, twelve seconds end to end. Give the UTC time of the last of those four requests. (5 points) | `2026-02-21 16:33:51` |
-| 8 | One second after it, a customer account logged in using a password credential that had not existed a moment earlier. Give that account number. (6 points) | `8163402257` |
-| 9 | Five days later the same thing happens to a second customer account, with one extra directory operation part-way through the session. Give that account number and the name of that operation. (6 points) | `2740885193`, `ChangeUserPassword` |
-| 10 | On the night of the payments the attacker searched the customer directory. One request was answered with a much larger response than any other. Give the size of that response in bytes. (5 points) | `1904672` |
-| 11 | Apart from the bulk searches, the attacker requested one single directory record by its numeric id. Give that id. (6 points) | `208450` |
-| 12 | In the hours before the payments, the second-factor setup on Rana Tannous's account was changed repeatedly. Give two numbers: how many times a device was unbound from her account, and how many new authenticator types were added to it. (6 points) | `5`, `2` |
-| 13 | During that session, her login was used to open a different customer's records. Give that customer id, and the UTC time it was first opened. (6 points) | `6607314982`, `2026-02-27 14:57:12` |
-| 14 | Give the Producer value on the last event of that session before it stopped. (5 points) | `PayeeObjects/Recipients/getExternalPayees` |
-| 15 | Eight of the payment rows written that night were sent to the same destination account. Give that account number, and the payee name stored alongside it. (6 points) | `7018245663991`, `Norrhavn Textile Trading` |
-| 16 | Not every payment row written against the victim's account completed. Add up only the ones that did, and give the total. (6 points) | `10544993` |
-| 17 | Eight of those rows share one amount, set just under a round limit. Give that amount, and the response code recorded on the single row that failed. (5 points) | `1499999`, `9998` |
-| 18 | Hours after the payments, requests from the attacker's address were still being accepted, arriving at a fixed interval no human would keep. Give that interval in seconds. (5 points) | `2440` |
-
-***
-
-## 7. IOCs
+## 6. IOCs
 
 | Type | Value | Note |
 | --- | --- | --- |
@@ -346,7 +321,7 @@ The interval is **2,440 s** (40 min 40 s), the signature of an automated session
 
 ***
 
-## 8. MITRE ATT&CK
+## 7. MITRE ATT&CK
 
 | Tactic | Technique | ID | Evidence |
 | --- | --- | --- | --- |
@@ -360,7 +335,7 @@ The interval is **2,440 s** (40 min 40 s), the signature of an automated session
 
 ***
 
-## 9. Lessons learned
+## 8. Lessons learned
 
 - An authentication server's **back-end interfaces** must never be reachable from the internet. One exposed SOAP endpoint turned an auth product into a password-reset service for the attacker.
 - A spike of tens of thousands of events from a **service identity** with a new session each time is not noise. It was the first visible sign of the intrusion, three weeks before the money moved.
@@ -368,7 +343,7 @@ The interval is **2,440 s** (40 min 40 s), the signature of an automated session
 - Amounts just under a limit (1,499,999) repeated to one new payee are a classic fraud pattern worth a rule of their own.
 - Check the time zone of every export against its epoch column before building a timeline.
 
-## 10. References
+## 9. References
 
 - HID ActivID Authentication Server: https://www.hidglobal.com/products/activid-authentication-server
 - Synacktiv advisory, ActivID authentication bypass (hotfix FIXS2510005): https://www.synacktiv.com/advisories/activid-authentication-bypass

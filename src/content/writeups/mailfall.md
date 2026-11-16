@@ -59,8 +59,6 @@ With full control they logged in to the SmarterMail admin panel at **03:10:01 UT
 
 The SOPRANOS domain runs a SmarterMail server, `MAIL01`, that also hosts the domain's webmail. The evidence is a triage collection of the mail server (`Desktop\Artefacts\MailFall\2026-02-28T104342_output\`): the `$MFT` and `$J`, Windows event logs, IIS logs, the SmarterMail data and log folders, and user profiles including Edge's databases.
 
-The questions follow the attack from the first foothold to the phishing email sent from inside.
-
 > **Time zone.** The server runs Pacific Standard Time (**UTC−8** in February). SmarterMail's own logs and the email headers use local time; the IIS logs, the `$MFT` and the Edge timestamps are UTC. All times in this writeup are **UTC** unless marked otherwise.
 
 ## 3. Tools
@@ -269,29 +267,7 @@ The log also shows the first copy deleted from Sent Items at 03:30:13 and a seco
 
 ***
 
-## 6. Lab Q&A
-
-| \# | Question | Answer |
-| --- | --- | --- |
-| 1 | We know the attacker didn't start at the mail server. They moved laterally from another internal workstation. What is the IP address of that originating machine? (5 points) | `192.168.45.130` |
-| 2 | Upon arrival, the attacker uploaded a web shell to establish persistence. When exactly did that upload occur? (6 points) | `2026-02-28 02:31:55` |
-| 3 | The initial compromise wasn't a brute force—they exploited a specific vulnerability. What CVE gave them their first foothold? (8 points) | `CVE-2025-52691` |
-| 4 | From the web shell, the attacker launched a reverse shell to their command and control server. What IP and port did they connect to first? (6 points) | `18.195.175.194:9001` |
-| 5 | Needing higher privileges, the attacker downloaded a well-known privilege escalation tool. What is its original name? (8 points) | `God Potato` |
-| 6 | The privilege escalation worked. They now had a SYSTEM shell calling back on a new port. What port is that? (6 points) | `15234` |
-| 7 | With SYSTEM access, the attacker downloaded a script to ensure they wouldn't lose access. What is the full URL of that script? (8 points) | `https://7070-ppxcx-a1-3gg5ufwp666ee644-1300076834.tcb.qcloud.la/test/zcgo/zcgo1.vbs` |
-| 8 | The script installed a remote control tool that was configured to start automatically via a Windows service. What is the name of that service? (8 points) | `TTXN GotoHTTP Agent` |
-| 9 | The downloaded script exfiltrated the remote tool's configuration details. What domain did it send this data to? (6 points) | `http://go1.kmm5tn.ceye.io` |
-| 10 | The exfiltrated data included the computer ID and access code needed for remote control. Provide them in the format ComputerID_AccessCode. (6 points) | `258475923_1078` |
-| 11 | Now in full control, the attacker logged into the mail panel as administrator, likely using saved passwords from the browser. When did that login occur? (5 points) | `2026-02-28 03:10:01` |
-| 12 | Inside the panel, they created a hidden admin account for future access. What are the email and password for this account? (10 points) | `backup_sa@SOPRANOS.local:Hacked1!` |
-| 13 | Exactly when was this new account with admin privilege created? (6 points) | `2026-02-28 03:14:31` |
-| 14 | Using their new account, the attacker sent a malicious email to a select group of users. Which domain users received it? Sort them alphabetically. (6 points) | `corrado, JohnnyBoy, mail_svc, tony` |
-| 15 | The email contained a link to a file, instructing recipients to download and run it. What is the full URL of that payload? (6 points) | `https://cdn-edge-83af.com/backup-tool.vbs` |
-
-***
-
-## 7. IOCs
+## 6. IOCs
 
 | Type | Value | Note |
 | --- | --- | --- |
@@ -313,7 +289,7 @@ The log also shows the first copy deleted from Sent Items at 03:30:13 and a seco
 
 ***
 
-## 8. MITRE ATT&CK
+## 7. MITRE ATT&CK
 
 | Tactic | Technique | ID | Evidence |
 | --- | --- | --- | --- |
@@ -332,7 +308,7 @@ The log also shows the first copy deleted from Sent Items at 03:30:13 and a seco
 
 ***
 
-## 9. Lessons learned
+## 8. Lessons learned
 
 - **Patch internet-facing mail servers first.** SmarterMail build 9406 was a few builds short of the fix for an unauthenticated upload that hands out code execution.
 - A new `.aspx` file in `wwwroot` or in SmarterMail's `App_Data\upload`, and `w3wp.exe` spawning `cmd.exe` or `powershell.exe`, are both worth an alert of their own.
@@ -342,7 +318,7 @@ The log also shows the first copy deleted from Sent Items at 03:30:13 and a seco
 - Watch the mail platform's own admin log: a new administrator, a "show password" call and domain-wide forwarding within ten minutes is not routine work.
 - An email from an internal address that asks users to run commands as Administrator is phishing, whoever sent it.
 
-## 10. References
+## 9. References
 
 - CVE-2025-52691: https://nvd.nist.gov/vuln/detail/CVE-2025-52691
 - Replicating CVE-2025-52691 (SmarterMail unauthenticated file upload to RCE): https://rodelllemit.medium.com/replicating-cve-2025-52691-an-rce-via-unauthenticated-arbitrary-file-upload-critical-vulnerability-e6c796270192
