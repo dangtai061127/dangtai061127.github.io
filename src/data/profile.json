@@ -4,12 +4,31 @@
   "lead": "",
   "intro": "",
   "cv": "",
-  "links": { "linkedin": "", "tryhackme": "", "hackthebox": "", "cyberdefenders": "", "btlo": "", "email": "" },
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/t%C3%A0i-%C4%91%E1%BA%B7ng-%C4%91%E1%BA%AFc-622b19403/",
+    "tryhackme": "https://tryhackme.com/p/25521607",
+    "hackthebox": "",
+    "cyberdefenders": "",
+    "btlo": "",
+    "email": ""
+  },
   "skills": [
-    { "name": "SOC monitoring", "tag": "SOC monitoring" },
-    { "name": "Detection", "tag": "Detection" },
-    { "name": "DFIR", "tag": "DFIR" },
-    { "name": "Threat intelligence", "tag": "Threat intelligence" }
+    {
+      "name": "SOC monitoring",
+      "tag": "SOC monitoring"
+    },
+    {
+      "name": "Detection",
+      "tag": "Detection"
+    },
+    {
+      "name": "DFIR",
+      "tag": "DFIR"
+    },
+    {
+      "name": "Threat intelligence",
+      "tag": "Threat intelligence"
+    }
   ],
   "achievements": [],
   "experience": [],
